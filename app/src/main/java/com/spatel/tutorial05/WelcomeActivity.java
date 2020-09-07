@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class WelcomeActivity extends AppCompatActivity {
+    private TextView txt_email;
     public SharedPreferences preferences;
     public SharedPreferences.Editor editor;
     @Override
@@ -17,6 +19,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("LogState",MODE_PRIVATE);
         editor = preferences.edit();
+        txt_email = findViewById(R.id.txtUser);
+        txt_email.setText(preferences.getString("Email",""));
     }
 
     public void LogoutMe(View view) {

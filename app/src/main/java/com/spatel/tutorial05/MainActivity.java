@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private Button btn_login;
     private EditText et_email,et_password;
-    private String key;
     private CheckBox remeberMe;
+    private String em,pa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,10 @@ public class MainActivity extends AppCompatActivity {
         preferences = getSharedPreferences("LogState",MODE_PRIVATE);
         editor = preferences.edit();
 
-        key = "isLogin";
-        Boolean state = checkKeyExists(preferences,key);
-        Log.d("tag :", String.valueOf(state));
-
-        if(!state){
+        // check user is login or not
+        if(!checkKeyExists(preferences,"isLogin")){
+            em = preferences.getString("Email","");
+            pa = preferences.getString("Password","");
             setContentView(R.layout.activity_main);
         }
         else{
@@ -46,24 +45,34 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-
-
-
+        // get reference to control it
         btn_login = findViewById(R.id.btnLogin);
         et_email = findViewById(R.id.etEmail);
         et_password = findViewById(R.id.etPassword);
         remeberMe = findViewById(R.id.rememberMe);
 
+        // set content in editbox if user check remember me or not
+        et_email.setText(em);
+        et_password.setText(pa);
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String email = et_email.getText().toString().trim().toLowerCase();
                 String password = et_password.getText().toString().trim();
+
                 if(isEmailValid(email) && isPasswordValid(password)) {
-                    String x = email+" "+password;
+                    if(remeberMe.isChecked()){
+                        editor.putString("Email",email);
+                        editor.putString("Password",password);
+                    }
+                    else{
+                        editor.remove("Email");
+                        editor.remove("Password");
+                    }
                     editor.putString("isLogin","true");
                     editor.commit();
-                    Toast.makeText(getApplicationContext(),x, LENGTH_SHORT).show();
                     Intent i = new Intent(MainActivity.this,WelcomeActivity.class);
                     startActivity(i);
                     finish();
@@ -81,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
             et_password.setError("Password can not be empty");
             return false;
         }
-        else if(password.length() > 8){
+        else if(password.length() <= 8){
+            Log.d("pass",password);
             et_password.setError("Password must be 8 char long");
             return false;
         }

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email Address"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="@color/colorAccent"
         android:textSize="22dp"
         android:textStyle="bold" />
 
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Password"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="@color/colorAccent"
         android:textSize="22dp"
         android:textStyle="bold" />
 
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="Rememeber me"
-        android:textColor="@android:color/holo_blue_light"
+        android:textColor="@color/colorAccent"
         android:textSize="17dp"
         android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/colorAccent"
         android:text="Signin"
         android:textColor="@android:color/background_light"
         android:textSize="18sp" />
