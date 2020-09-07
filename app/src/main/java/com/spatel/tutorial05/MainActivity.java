@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,24 +13,30 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.regex.Pattern;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity {
-    public SharedPreferences preferences;
-    public SharedPreferences.Editor editor;
-    public Button btn_login;
-    public EditText et_email,et_password;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private Button btn_login;
+    private EditText et_email,et_password;
     private String key;
-    public CheckBox remeberMe;
-    public Validation verify;
+    private CheckBox remeberMe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         preferences = getSharedPreferences("LogState",MODE_PRIVATE);
         editor = preferences.edit();
+
         key = "isLogin";
         Boolean state = checkKeyExists(preferences,key);
         Log.d("tag :", String.valueOf(state));
+
         if(!state){
             setContentView(R.layout.activity_main);
         }
@@ -74,16 +81,23 @@ public class MainActivity extends AppCompatActivity {
             et_password.setError("Password can not be empty");
             return false;
         }
+        else if(password.length() > 8){
+            et_password.setError("Password must be 8 char long");
+            return false;
+        }
         else{
             et_password.setError(null);
             return true;
         }
-
     }
 
     private boolean isEmailValid(String email) {
         if(email.isEmpty()){
             et_email.setError("Email can not be empty");
+            return false;
+        }
+        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            et_email.setError("Invalid Email !");
             return false;
         }
         else{
